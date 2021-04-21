@@ -3,9 +3,11 @@ package com.mliang.service.impl;
 import com.mliang.dao.IUserDao;
 import com.mliang.model.User;
 import com.mliang.service.IUserService;
+import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+
 
 @Service("userService")
 public class UserServiceImpl implements IUserService {

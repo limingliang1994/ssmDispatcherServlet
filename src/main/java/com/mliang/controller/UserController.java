@@ -15,6 +15,7 @@ public class UserController {
 
     @RequestMapping("/select")
     public ModelAndView selectUser() throws Exception {
+        System.out.println("我在中间被执行.....");
         ModelAndView mv = new ModelAndView();
         User user = userService.selectUser(1);
         mv.addObject("user", user);
