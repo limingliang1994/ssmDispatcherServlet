@@ -1,10 +1,8 @@
 package com.mliang.aspect;
 
 import org.aspectj.lang.JoinPoint;
-import org.aspectj.lang.annotation.After;
-import org.aspectj.lang.annotation.Aspect;
-import org.aspectj.lang.annotation.Before;
-import org.aspectj.lang.annotation.Pointcut;
+import org.aspectj.lang.ProceedingJoinPoint;
+import org.aspectj.lang.annotation.*;
 
 @Aspect
 public class AnnnotationTest {
@@ -51,6 +49,15 @@ public class AnnnotationTest {
     public void after(JoinPoint point) {
         System.out.println("我第三个执行.....");
         //省略
+    }
+    @Around("controllerAspect()")
+    public Object myAround(ProceedingJoinPoint joinPoint) throws Throwable{
+        System.out.println("前");
+        //手动执行目标方法
+        Object obj = joinPoint.proceed();
+
+        System.out.println("后");
+        return obj;
     }
 
 }
