@@ -5,4 +5,5 @@ import com.mliang.model.User;
 public interface IUserService {
 
     public User selectUser(long userId);
+    public int saveUser(User user);
 }

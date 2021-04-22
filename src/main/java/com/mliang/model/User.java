@@ -1,17 +1,17 @@
 package com.mliang.model;
 
 public class User {
-    private long id;
+    private String id;
     private String email;
     private String mobile;
     private String username;
     private String role;
 
-    public long getId() {
+    public String getId() {
         return id;
     }
 
-    public void setId(long id) {
+    public void setId(String id) {
         this.id = id;
     }
 
@@ -44,6 +44,17 @@ public class User {
     }
 
     public void setRole(String role) {
+        this.role = role;
+    }
+
+    public User() {
+    }
+
+    public User(String id, String email, String mobile, String username, String role) {
+        this.id = id;
+        this.email = email;
+        this.mobile = mobile;
+        this.username = username;
         this.role = role;
     }
 }

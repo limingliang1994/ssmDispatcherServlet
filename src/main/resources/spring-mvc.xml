@@ -13,8 +13,21 @@
     <!-- 扫描注解，这样com.xjt包下的文件都能被扫描 -->
     <context:component-scan base-package="com.mliang"/>
 
-    <!-- 开启SpringMVC注解模式 -->
-    <mvc:annotation-driven/>
+    <!-- 开启SpringMVC注解模式,并且指定响应的类型为utf-8,防止前端出现中文乱码 -->
+    <mvc:annotation-driven>
+        <mvc:message-converters>
+            <bean class="org.springframework.http.converter.StringHttpMessageConverter">
+                <property name="supportedMediaTypes">
+                    <list>
+                        <value>text/html;charset=UTF-8</value>
+                        <value>text/json;charset=UTF-8</value>
+                        <value>application/json;charset=UTF-8</value>
+                    </list>
+                </property>
+            </bean>
+        </mvc:message-converters>
+    </mvc:annotation-driven>
+
     <aop:aspectj-autoproxy proxy-target-class="true" />
     <bean id="annotationTest" class="com.mliang.aspect.AnnnotationTest"/>
 

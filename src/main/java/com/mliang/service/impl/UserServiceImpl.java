@@ -19,4 +19,9 @@ public class UserServiceImpl implements IUserService {
         System.out.println("我是service层");
         return userDao.selectUser(userId);
     }
+
+    @Override
+    public int saveUser(User user) {
+        return userDao.saveUser(user);
+    }
 }
