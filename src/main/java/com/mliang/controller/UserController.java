@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
+import java.util.Date;
 import java.util.UUID;
 
 @Controller
@@ -39,11 +40,17 @@ public class UserController {
         String name = "李四";
         String email = "2335113119@qq.com";
         String role = "master";
-        User user  = new User(userId,email,"15558287958",name,role);
-        int result = userService.saveUser(user);
-        if(result>0){
-            json.put("code","200");
-            json.put("msg","插入成功");
+        Date createTime = new Date(System.currentTimeMillis());
+        User user  = new User(userId,email,"15558287958",name,role,createTime);
+
+        try {
+            int result = userService.saveUser(user);
+            if(result>0){
+                json.put("code","200");
+                json.put("msg","插入成功");
+            }
+        } catch (Exception e) {
+            System.out.println("我遇到了异常");
         }
         return json.toJSONString();
     }

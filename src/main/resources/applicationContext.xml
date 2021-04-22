@@ -42,4 +42,7 @@
         <!--数据库连接池-->
         <property name="dataSource" ref="dataSource"/>
     </bean>
+
+    <!-- 注解方式配置事务 -->
+    <tx:annotation-driven transaction-manager="transactionManager" />
 </beans>

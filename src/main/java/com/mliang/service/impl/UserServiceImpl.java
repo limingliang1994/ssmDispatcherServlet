@@ -5,10 +5,11 @@ import com.mliang.model.User;
 import com.mliang.service.IUserService;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
 
-
+@Transactional
 @Service("userService")
 public class UserServiceImpl implements IUserService {
 
@@ -22,6 +23,7 @@ public class UserServiceImpl implements IUserService {
 
     @Override
     public int saveUser(User user) {
-        return userDao.saveUser(user);
+        int result = userDao.saveUser(user);
+        return result;
     }
 }

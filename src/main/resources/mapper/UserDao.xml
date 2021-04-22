@@ -9,9 +9,9 @@
     </select>
     <insert id="saveUser"  parameterType="User">
         INSERT INTO user(id,email,
-				username,role,mobile)
+				username,role,mobile,createTime)
 		VALUES
 			(#{id},#{email},#{username},#{role},
-			#{mobile});
+			#{mobile},#{createTime});
     </insert>
 </mapper>

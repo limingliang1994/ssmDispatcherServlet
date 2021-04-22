@@ -1,11 +1,22 @@
 package com.mliang.model;
 
+import java.util.Date;
+
 public class User {
     private String id;
     private String email;
     private String mobile;
     private String username;
     private String role;
+    private Date createTime;
+
+    public Date getCreateTime() {
+        return createTime;
+    }
+
+    public void setCreateTime(Date createTime) {
+        this.createTime = createTime;
+    }
 
     public String getId() {
         return id;
@@ -50,11 +61,32 @@ public class User {
     public User() {
     }
 
+    public User(String id, String email, String mobile, String username, String role, Date createTime) {
+        this.id = id;
+        this.email = email;
+        this.mobile = mobile;
+        this.username = username;
+        this.role = role;
+        this.createTime = createTime;
+    }
+
     public User(String id, String email, String mobile, String username, String role) {
         this.id = id;
         this.email = email;
         this.mobile = mobile;
         this.username = username;
         this.role = role;
+    }
+
+    @Override
+    public String toString() {
+        return "User{" +
+                "id='" + id + '\'' +
+                ", email='" + email + '\'' +
+                ", mobile='" + mobile + '\'' +
+                ", username='" + username + '\'' +
+                ", role='" + role + '\'' +
+                ", createTime=" + createTime +
+                '}';
     }
 }
