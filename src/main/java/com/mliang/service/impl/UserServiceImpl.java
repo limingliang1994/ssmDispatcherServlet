@@ -16,6 +16,7 @@ public class UserServiceImpl implements IUserService {
     private IUserDao userDao;
 
     public User selectUser(long userId) {
+        System.out.println("我是service层");
         return userDao.selectUser(userId);
     }
 }
