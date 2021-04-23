@@ -3,8 +3,10 @@ package com.mliang.controller;
 import com.alibaba.fastjson.JSONObject;
 import com.mliang.model.User;
 import com.mliang.service.IUserService;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.util.DigestUtils;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -14,6 +16,7 @@ import java.util.Date;
 import java.util.UUID;
 
 @Controller
+@Slf4j
 public class UserController {
 
     @Autowired
@@ -21,11 +24,16 @@ public class UserController {
 
     @RequestMapping(value = "/select", produces = "application/json; charset=utf-8",method = RequestMethod.GET)
     public ModelAndView selectUser() throws Exception {
-        System.out.println("我在中间被执行.....");
+        log.info("测试日志输出");
+        log.debug("This is debug message.");
+        String md5Password = DigestUtils.md5DigestAsHex("1234".getBytes());
+        String pass = DigestUtils.md5DigestAsHex("12345".getBytes());
+        String pass1 = DigestUtils.md5DigestAsHex("1234".getBytes());
         ModelAndView mv = new ModelAndView();
         User user = userService.selectUser(1);
         mv.addObject("user", user);
         mv.setViewName("user");
+        log.info("查询用户信息成功");
         return mv;
     }
 
