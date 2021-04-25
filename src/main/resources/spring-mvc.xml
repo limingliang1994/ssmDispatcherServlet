@@ -13,6 +13,12 @@
     <!-- 扫描注解，这样com.xjt包下的文件都能被扫描 -->
     <context:component-scan base-package="com.mliang"/>
 
+    <!--springMvc跨域配置，需要springMVC版本4以上-->
+    <mvc:cors>
+        <mvc:mapping path="/**" allowed-origins="*" allow-credentials="true" max-age="1800"
+                     allowed-methods="GET,POST,PUT,DELETE,PATCH,OPTIONS"/>
+    </mvc:cors>
+
     <!-- 开启SpringMVC注解模式,并且指定响应的类型为utf-8,防止前端出现中文乱码 -->
     <mvc:annotation-driven>
         <mvc:message-converters>
@@ -28,7 +34,9 @@
         </mvc:message-converters>
     </mvc:annotation-driven>
 
+    <!--开启AOP切面编程，底层强制使用cglib动态代理-->
     <aop:aspectj-autoproxy proxy-target-class="true" />
+    <!--自定义的拦截类-->
     <bean id="annotationTest" class="com.mliang.aspect.AnnnotationTest"/>
 
     <!-- 静态资源默认servlet配置 -->

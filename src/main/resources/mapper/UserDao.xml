@@ -5,13 +5,13 @@
 <mapper namespace="com.mliang.dao.IUserDao">
 
     <select id="selectUser" resultType="User" parameterType="long">
-        SELECT * FROM user WHERE id = #{id}
+        SELECT id,email,username,role,mobile,createTime FROM user WHERE id = #{id}
     </select>
     <insert id="saveUser"  parameterType="User">
         INSERT INTO user(id,email,
-				username,role,mobile,createTime)
+				username,role,mobile,createTime,password)
 		VALUES
 			(#{id},#{email},#{username},#{role},
-			#{mobile},#{createTime});
+			#{mobile},#{createTime},#{password});
     </insert>
 </mapper>

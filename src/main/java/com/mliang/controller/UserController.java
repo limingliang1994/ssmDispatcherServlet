@@ -7,11 +7,10 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.util.DigestUtils;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.Date;
 import java.util.UUID;
 
@@ -24,9 +23,7 @@ public class UserController {
 
     @RequestMapping(value = "/select", produces = "application/json; charset=utf-8",method = RequestMethod.GET)
     public ModelAndView selectUser() throws Exception {
-        log.info("测试日志输出");
-        log.debug("This is debug message.");
-        String md5Password = DigestUtils.md5DigestAsHex("1234".getBytes());
+        log.info("用户查询");
         String pass = DigestUtils.md5DigestAsHex("12345".getBytes());
         String pass1 = DigestUtils.md5DigestAsHex("1234".getBytes());
         ModelAndView mv = new ModelAndView();
@@ -39,18 +36,17 @@ public class UserController {
 
     @RequestMapping(value = "/save")
     @ResponseBody
-    public String saveUser() throws Exception {
-        System.out.println("执行用户保存.....");
+    public String saveUser(@RequestBody User user) throws Exception {
+        log.info("执行用户保存.....");
         JSONObject json = new JSONObject();
         json.put("code","201");
         json.put("msg","插入失败");
         String userId = UUID.randomUUID().toString();
-        String name = "李四";
-        String email = "2335113119@qq.com";
-        String role = "master";
         Date createTime = new Date(System.currentTimeMillis());
-        User user  = new User(userId,email,"15558287958",name,role,createTime);
-
+        String md5Password = DigestUtils.md5DigestAsHex(user.getPassword().getBytes());
+        user.setId(userId);
+        user.setPassword(md5Password);
+        user.setCreateTime(createTime);
         try {
             int result = userService.saveUser(user);
             if(result>0){
@@ -58,7 +54,7 @@ public class UserController {
                 json.put("msg","插入成功");
             }
         } catch (Exception e) {
-            System.out.println("我遇到了异常");
+            log.error("执行保存用户异常：原因如下："+e.getMessage());
         }
         return json.toJSONString();
     }

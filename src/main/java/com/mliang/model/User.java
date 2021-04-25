@@ -8,6 +8,7 @@ public class User {
     private String mobile;
     private String username;
     private String role;
+    private String password;
     private Date createTime;
 
     public Date getCreateTime() {
@@ -16,6 +17,14 @@ public class User {
 
     public void setCreateTime(Date createTime) {
         this.createTime = createTime;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
     }
 
     public String getId() {
