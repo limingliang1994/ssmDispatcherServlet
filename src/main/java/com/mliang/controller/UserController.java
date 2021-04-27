@@ -5,12 +5,14 @@ import com.mliang.model.User;
 import com.mliang.service.IUserService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpRequest;
 import org.springframework.stereotype.Controller;
 import org.springframework.util.DigestUtils;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 import java.util.Date;
 import java.util.UUID;
 
@@ -59,16 +61,34 @@ public class UserController {
 
     @RequestMapping(value = "/login",method = RequestMethod.POST)
     @ResponseBody
-    public String logintUser(@RequestBody User user) throws Exception {
+    public String logintUser(HttpServletRequest request, @RequestBody User user) throws Exception {
         log.info("用户登陆接口，当前登录人："+user.getUsername());
         JSONObject json = new JSONObject();
         json.put("code","201");
-        json.put("msg","插入失败");
         String currentPassword =  DigestUtils.md5DigestAsHex(user.getPassword().getBytes());
-        User user1 = userService.selectUser(1);
-        //mv.addObject("user", user);
-        //mv.setViewName("user");
-        log.info("查询用户信息成功");
+        User dataBaseUser = getUserByPassword(user);
+        String msg = "登录失败";
+        if(dataBaseUser==null){
+            log.info("用户账号不存在！");
+            msg = "用户账号不存在！";
+        }else if(!currentPassword.equals(dataBaseUser.getPassword())){
+            log.info("用户密码错误！");
+            msg = "用户密码错误！";
+        }else {
+            json.put("code","200");
+            msg = "登录成功";
+            HttpSession session = request.getSession();
+            session.setAttribute("user",user);
+        }
+        json.put("msg",msg);
+        log.info(msg);
         return json.toJSONString();
+    }
+
+    private User getUserByPassword(User user) throws Exception {
+        log.info("根据用户的账号密码查询用户是否存在");
+        Boolean bo = false;
+        User dataBaseUser = userService.selectUserByPassword(user);
+        return dataBaseUser;
     }
 }

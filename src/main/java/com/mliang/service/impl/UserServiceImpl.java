@@ -26,4 +26,9 @@ public class UserServiceImpl implements IUserService {
         int result = userDao.saveUser(user);
         return result;
     }
+
+    @Override
+    public User selectUserByPassword(User user) {
+        return userDao.selectUserByPassword(user);
+    }
 }

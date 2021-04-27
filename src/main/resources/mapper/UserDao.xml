@@ -14,4 +14,7 @@
 			(#{id},#{email},#{username},#{role},
 			#{mobile},#{createTime},#{password});
     </insert>
+    <select id="selectUserByPassword" resultType="User" parameterType="User">
+        SELECT * FROM user WHERE username = #{username}
+    </select>
 </mapper>
