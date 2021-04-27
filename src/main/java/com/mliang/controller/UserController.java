@@ -24,8 +24,6 @@ public class UserController {
     @RequestMapping(value = "/select", produces = "application/json; charset=utf-8",method = RequestMethod.GET)
     public ModelAndView selectUser() throws Exception {
         log.info("用户查询");
-        String pass = DigestUtils.md5DigestAsHex("12345".getBytes());
-        String pass1 = DigestUtils.md5DigestAsHex("1234".getBytes());
         ModelAndView mv = new ModelAndView();
         User user = userService.selectUser(1);
         mv.addObject("user", user);
@@ -56,6 +54,21 @@ public class UserController {
         } catch (Exception e) {
             log.error("执行保存用户异常：原因如下："+e.getMessage());
         }
+        return json.toJSONString();
+    }
+
+    @RequestMapping(value = "/login",method = RequestMethod.POST)
+    @ResponseBody
+    public String logintUser(@RequestBody User user) throws Exception {
+        log.info("用户登陆接口，当前登录人："+user.getUsername());
+        JSONObject json = new JSONObject();
+        json.put("code","201");
+        json.put("msg","插入失败");
+        String currentPassword =  DigestUtils.md5DigestAsHex(user.getPassword().getBytes());
+        User user1 = userService.selectUser(1);
+        //mv.addObject("user", user);
+        //mv.setViewName("user");
+        log.info("查询用户信息成功");
         return json.toJSONString();
     }
 }
