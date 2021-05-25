@@ -79,6 +79,8 @@ public class UserController {
             msg = "登录成功";
             HttpSession session = request.getSession();
             session.setAttribute("user",user);
+            json.put("sessionId",session.getId());
+            json.put("data",dataBaseUser);
         }
         json.put("msg",msg);
         log.info(msg);

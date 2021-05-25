@@ -3,7 +3,6 @@ package com.mliang.service.impl;
 import com.mliang.dao.IUserDao;
 import com.mliang.model.User;
 import com.mliang.service.IUserService;
-import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -25,6 +24,11 @@ public class UserServiceImpl implements IUserService {
     public int saveUser(User user) {
         int result = userDao.saveUser(user);
         return result;
+    }
+
+    @Override
+    public User selectUserByUserName(String userName) {
+        return null;
     }
 
     @Override
