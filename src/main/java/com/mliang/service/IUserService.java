@@ -7,5 +7,5 @@ public interface IUserService {
     public User selectUser(long userId);
     public int saveUser(User user);
     public User selectUserByPassword(User user);
-    public User selectUserByUserName(String userName);
+    public int selectUserByUserName(String userName);
 }

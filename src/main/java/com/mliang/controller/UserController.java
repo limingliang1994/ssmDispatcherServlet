@@ -48,6 +48,11 @@ public class UserController {
         user.setPassword(md5Password);
         user.setCreateTime(createTime);
         try {
+            int countExist = userService.selectUserByUserName(user.getUsername());
+            if(countExist>0){
+                json.put("msg","姓名已被注册！");
+                return json.toJSONString();
+            }
             int result = userService.saveUser(user);
             if(result>0){
                 json.put("code","200");
