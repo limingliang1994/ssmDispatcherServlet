@@ -27,8 +27,9 @@ public class UserServiceImpl implements IUserService {
     }
 
     @Override
-    public User selectUserByUserName(String userName) {
-        return null;
+    public int selectUserByUserName(String userName) {
+
+        return userDao.selectUserByUserName(userName);
     }
 
     @Override

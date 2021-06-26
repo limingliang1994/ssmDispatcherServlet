@@ -17,4 +17,7 @@
     <select id="selectUserByPassword" resultType="User" parameterType="User">
         SELECT * FROM user WHERE username = #{username}
     </select>
+    <select id="selectUserByUserName" resultType="int"  parameterType="String">
+        SELECT count(*) FROM user WHERE username = #{username}
+    </select>
 </mapper>
