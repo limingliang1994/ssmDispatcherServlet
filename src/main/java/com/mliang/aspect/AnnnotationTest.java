@@ -1,8 +1,16 @@
 package com.mliang.aspect;
 
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.*;
+import org.springframework.web.context.request.RequestAttributes;
+import org.springframework.web.context.request.RequestContextHolder;
+import org.springframework.web.context.request.ServletRequestAttributes;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 
 @Aspect
 public class AnnnotationTest {
@@ -36,28 +44,37 @@ public class AnnnotationTest {
 //			(int ,int)					两个
 //            (..)						参数任意
     //配置接入点
-    @Pointcut("execution(* com.mliang.service.impl..*.*(..))")
+    //@Pointcut("execution(* com.mliang.service.impl..*.*(..))")
+    @Pointcut("execution(* com.mliang.controller.login..*.*(..))")
     private void controllerAspect(){}//定义一个切入点
 
 
     @Before("controllerAspect()")
     public void paramValid(JoinPoint point) {
-        System.out.println("我第一个执行.....");
-        //省略
+        System.out.println("我是前置通知.....");
     }
     @After("controllerAspect()")
     public void after(JoinPoint point) {
-        System.out.println("我第三个执行.....");
+        System.out.println("我是后置通知.....");
         //省略
     }
     @Around("controllerAspect()")
     public Object myAround(ProceedingJoinPoint joinPoint) throws Throwable{
-        System.out.println("前");
+        RequestAttributes requestAttributes = RequestContextHolder.getRequestAttributes();
+        HttpServletRequest request = ((ServletRequestAttributes) requestAttributes).getRequest();
+        HttpSession session= request.getSession();
+        System.out.println("我是环绕通知.....");
         //手动执行目标方法
-        Object obj = joinPoint.proceed();
+        if(session.getAttribute("user") == null){
+            JSONObject json = new JSONObject();
+            json.put("code","100");
+            json.put("msg","用户未登录");
+            return json.toJSONString();
+        }else{
+            Object obj = joinPoint.proceed();
+            return obj;
+        }
 
-        System.out.println("后");
-        return obj;
     }
 
 }

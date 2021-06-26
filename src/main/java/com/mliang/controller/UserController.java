@@ -11,7 +11,9 @@ import org.springframework.util.DigestUtils;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.util.Date;
 import java.util.UUID;
@@ -33,6 +35,7 @@ public class UserController {
         log.info("查询用户信息成功");
         return mv;
     }
+
 
     @RequestMapping(value = "/save")
     @ResponseBody
@@ -61,7 +64,7 @@ public class UserController {
 
     @RequestMapping(value = "/login",method = RequestMethod.POST)
     @ResponseBody
-    public String logintUser(HttpServletRequest request, @RequestBody User user) throws Exception {
+    public String logintUser(HttpServletRequest request, HttpServletResponse response, @RequestBody User user) throws Exception {
         log.info("用户登陆接口，当前登录人："+user.getUsername());
         JSONObject json = new JSONObject();
         json.put("code","201");
@@ -77,10 +80,21 @@ public class UserController {
         }else {
             json.put("code","200");
             msg = "登录成功";
-            HttpSession session = request.getSession();
+            HttpSession session = request.getSession(false);
+            if(session!=null){
+                //注销原session，为的是重置sessionId
+                session.invalidate();
+                //将临时map中的数据转移至新session
+
+            }
+            session = request.getSession();
             session.setAttribute("user",user);
             json.put("sessionId",session.getId());
             json.put("data",dataBaseUser);
+            Cookie cookie=new Cookie("JSESSIONID", session.getId());
+            cookie.setPath("/");
+            response.addCookie(cookie);
+
         }
         json.put("msg",msg);
         log.info(msg);
